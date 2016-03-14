@@ -34,12 +34,8 @@
       if(this.state.companies.length > 0){
         // return "Question Loaded";
         return this.state.companies.map(function(c){
-          var productList =  [];
-          c.products.map(function(p){
-            productList.push(p.title);
-          });
-          var products = productList.join(", ");
-          console.log(productList);
+          var products = c.products.join(", ");
+          // console.log(productList);
           return <Company id={c.id} name={c.name} products={products} />;
         });
       }

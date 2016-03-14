@@ -33,7 +33,7 @@ $(document).ready(function() {
       },
       success: function(e){
         alert("liked!");
-        $(this).html("Likes (" + (currentLikes+1) + ")");
+        $(this).html("Like (" + (currentLikes+1) + ")");
       }.bind(this),
       data: {company:{likes: currentLikes+1} }
     });

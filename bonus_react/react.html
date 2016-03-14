@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>React.js Forms</title>
+  <script src="react.js"></script>
+  <script src="react-dom.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+<body>
+  <div id="container"></div>
+
+  <script type="text/babel">
+  var CompanyProducts = React.createClass({
+    getInitialState: function(){
+      return { companies: []};
+    },
+
+    componentDidMount: function(){
+      $.ajax({
+        url: "http://localhost:3000/companies.json",
+        method: "GET",
+        error: function(){
+          alert("failed to load! People retry.");
+        },
+        success: function(data){
+          this.setState({companies: data.companies});
+        }.bind(this)
+      });
+    },
+
+    companiesDisplay: function(){
+      if(this.state.companies.length > 0){
+        // return "Question Loaded";
+        return this.state.companies.map(function(c){
+          var productList =  [];
+          c.products.map(function(p){
+            productList.push(p.title);
+          });
+          var products = productList.join(", ");
+          console.log(productList);
+          return <Company id={c.id} name={c.name} products={products} />;
+        });
+      }
+      else{
+        return "Loading...";
+      }
+    },
+
+    render: function(){
+      return <div>
+      <h1>Companies</h1>
+      {this.companiesDisplay()}
+      </div>;
+    }
+  });
+  var Company = React.createClass({
+    likeCompany: function(){
+      alert("liked!");
+    },
+    render: function(){
+      return <div>
+      <h2>{this.props.name}</h2>
+      <button onclick={this.likeCompany}>Like</button>
+      <p>{this.props.products}</p>
+      <hr />
+      </div>;
+    }
+  });
+
+  ReactDOM.render(<CompanyProducts />, document.getElementById("container"));
+  </script>
+</body>
+</html>
